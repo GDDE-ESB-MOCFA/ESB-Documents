@@ -1,6 +1,6 @@
-# Generic Template – Backend System Installation Guide
+# MCFA E-Services – Backend System Installation Guide
 
-Generic Template v1.0.0
+MCFA E-Services (ESB Generic Template) v2.0.0
 
 ---
 
@@ -9,6 +9,7 @@ Generic Template v1.0.0
 | Release no | Author   | Release Date | Description                                          |
 | :--------- | :------- | :----------- | :--------------------------------------------------- |
 | v1.0.0     | ESB Team | January 2026 | Initial release of Generic Template​ Backend System. |
+| v2.0.0     | GDDE     | August 2026  | Updated for the MCFA deployment: GDDE-ESB-MOCFA repositories, NestJS gateway/registry/certificate/review services. |
 
 ## Table of Contents
 
@@ -133,7 +134,7 @@ All backend microservices are built with the following stack:
 - Authentication and authorization
 - Request routing and load balancing
 
-**Repository**: `ESB-Public-Gateway`
+**Repository**: `esb-public-gateway-nest`
 
 #### 2. **Backoffice Gateway**
 
@@ -141,7 +142,7 @@ All backend microservices are built with the following stack:
 - Audit logging
 - Internal service routing
 
-**Repository**: `ESB-Back-Office-Gateway`
+**Repository**: `esb-backoffice-gateway-nest`
 
 #### 3. **Address Service**
 
@@ -158,7 +159,7 @@ All backend microservices are built with the following stack:
 - Application tracking and status updates
 - Service management
 
-**Repository**: `ESB-Application`
+**Repository**: `esb-registry-svc-nest` (applications, profiles and MCFA licensing are served by the registry service)
 **Key Entities**: Application, Service, ServiceFee, ServiceDocument, ServiceDepartment
 
 #### 5. **Authorization Service**
@@ -176,7 +177,7 @@ All backend microservices are built with the following stack:
 - Business Profile
 - License Information
 
-**Repository**: `ESB-Profile`
+**Repository**: `esb-registry-svc-nest` (merged into the registry service)
 
 #### 7. **Certificate Service**
 
@@ -185,7 +186,7 @@ All backend microservices are built with the following stack:
 - Certificate verification
 - Verify.gov.kh QR Code generation for certificates
 
-**Repository**: `ESB-Certificate`
+**Repository**: `esb-certificate-svc-nest`
 **Key Entities**: Certificate, CertificateTemplate
 
 #### 8. **Review Service**
@@ -195,7 +196,7 @@ All backend microservices are built with the following stack:
 - Review assignment and tracking
 - Email/Telegram notifications for review stages
 
-**Repository**: `ESB-Review`
+**Repository**: `esb-review-svc-nest`
 **Key Entities**: ReviewWorkflow, ReviewWorkflowStep, ReviewEmailTemplate
 
 #### 9. **MOC Client Service**
@@ -219,7 +220,7 @@ All backend microservices are built with the following stack:
 - Delivery status tracking
 - Provider integration
 
-**Repository**: `ESB-SMS`
+**Repository**: `ESB-Sms`
 
 #### 12. **Telegram Service**
 
@@ -517,34 +518,39 @@ ESB-Deployment/
 #### Clone Repositories
 
 ```bash
+# All repositories live under the GDDE-ESB-MOCFA organization
+ORG=https://github.com/GDDE-ESB-MOCFA
+
 # Create workspace
 mkdir esb-workspace && cd esb-workspace
 
 # Clone Development-Tool
-git clone <repo-url>/ESB-Development-Tool
+git clone $ORG/ESB-Development-Tool
 
 # Clone K8s Deployment repository
-git clone <repo-url>/ESB-Deployment
+git clone $ORG/ESB-Deployment
 
-# Clone all backend services
-git clone <repo-url>/ESB-Address
-git clone <repo-url>/ESB-Application
-git clone <repo-url>/ESB-Authorization
-git clone <repo-url>/ESB-Profile
-git clone <repo-url>/ESB-Certificate
-git clone <repo-url>/ESB-Review
-git clone <repo-url>/ESB-MOC-Client
-git clone <repo-url>/ESB-Report
-git clone <repo-url>/ESB-SMS
-git clone <repo-url>/ESB-Email
-git clone <repo-url>/ESB-Telegram
-git clone <repo-url>/ESB-NRMIS
-git clone <repo-url>/ESB-Public-Gateway
-git clone <repo-url>/ESB-Back-Office-Gateway
+# Clone NestJS backend services (gateways, registry, certificate, review)
+git clone $ORG/esb-public-gateway-nest
+git clone $ORG/esb-backoffice-gateway-nest
+git clone $ORG/esb-registry-svc-nest
+git clone $ORG/esb-certificate-svc-nest
+git clone $ORG/esb-review-svc-nest
+
+# Clone Java backend services
+git clone $ORG/ESB-Address
+git clone $ORG/ESB-Authorization
+git clone $ORG/ESB-MOC-Client
+git clone $ORG/ESB-Payment
+git clone $ORG/ESB-Report
+git clone $ORG/ESB-Sms
+git clone $ORG/ESB-Email
+git clone $ORG/ESB-Telegram
+git clone $ORG/ESB-NRMIS
 
 # Clone frontends
-git clone <repo-url>/ESB-Registry-Public-Portal
-git clone <repo-url>/ESB-Registry-Backoffice-Portal
+git clone $ORG/ESB-Registry-Public-Portal
+git clone $ORG/ESB-Registry-Backoffice-Portal
 ```
 
 #### Setup Local Environment
